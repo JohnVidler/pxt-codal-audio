@@ -1,7 +1,7 @@
 /**
  * Functions to operate the v2 on-board microphone and speaker.
  */
-//% weight=5 color=#2699BF icon="\uf6a8"
+//% weight=5 color=#2699BF icon="\uf6a8" block="V2 Audio Blocks" advanced=false
 namespace codalAudio {
 
     /**
