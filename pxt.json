@@ -1,6 +1,6 @@
 {
     "name": "codal-audio",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "CODAL Audio Support Library",
     "license": "MIT",
     "dependencies": {
@@ -13,7 +13,7 @@
     "testFiles": [
         "codal-audio-test.ts"
     ],
-    "public": false,
+    "public": true,
     "supportedTargets": [
         "microbit"
     ],
