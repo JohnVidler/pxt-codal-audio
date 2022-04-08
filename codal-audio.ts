@@ -1,8 +1,8 @@
 /**
  * Functions to operate the v2 on-board microphone and speaker.
  */
-//% weight=5 color=#2699BF icon="\uf110"
-namespace codal_audio {
+//% weight=5 color=#2699BF icon="\uf6a8"
+namespace codalAudio {
 
     /**
      * Play and recorded audio
