@@ -1,0 +1,21 @@
+{
+    "name": "codal-audio",
+    "version": "0.0.1",
+    "description": "CODAL Audio Support Library",
+    "license": "MIT",
+    "dependencies": {
+        "core": "*",
+    },
+    "files": [
+        "README.md",
+        "codal-audio.ts",
+    ],
+    "testFiles": [
+        "codal-audio-test.ts"
+    ],
+    "public": false,
+    "supportedTargets": [
+        "microbit"
+    ],
+    "preferredEditor": "tsprj"
+}
