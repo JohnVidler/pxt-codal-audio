@@ -1,14 +1,14 @@
 {
     "name": "codal-audio",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "CODAL Audio Support Library",
     "license": "MIT",
     "dependencies": {
-        "core": "*",
+        "core": "*"
     },
     "files": [
         "README.md",
-        "codal-audio.ts",
+        "codal-audio.ts"
     ],
     "testFiles": [
         "codal-audio-test.ts"
