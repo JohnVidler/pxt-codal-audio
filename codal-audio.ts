@@ -31,10 +31,8 @@ namespace codalAudio {
      * 
      * @param sync If true, block until we run out of memory!
      */
-    //% block="​Start recording || and record for %time seconds"
-    //% expandableArgumentMode="enabled"
-    //% time.defl=3
-    export function record( time?: number ) : void {
+    //% block="​⏺️ Start recording"
+    export function record() : void {
         /* Dummy function */
     }
 
@@ -55,18 +53,15 @@ namespace codalAudio {
      * 
      * @param sync If true, block until complete
      */
-    //% block="​Start playback || in the %sync and play for %time seconds"
-    //% expandableArgumentMode="enabled"
-    //% sync.defl=true
-    //% time.defl=3
-    export function play( sync?: WaitOpts, time?: number ) : void {
+    //% block="​▶️ Start playback"
+    export function play() : void {
         /* Dummy function */
     }
 
     /**
      * Play and recorded audio
      */
-    //% block="Stop"
+    //% block="⏹️ Stop"
     export function stop() : void {
         /* Dummy function */
     }
@@ -74,23 +69,23 @@ namespace codalAudio {
     /**
      * Play and recorded audio
      */
-    //% block="Erase Recording"
+    //% block="🚮 Erase recording"
     export function erase() : void {
         /* Dummy function */
     }
 
     //% block
-    export function soundIsPlaying() : boolean {
+    export function audioIsPlaying() : boolean {
         return false;
     }
 
     //% block
-    export function soundIsRecording() : boolean {
+    export function audioIsRecording() : boolean {
         return false;
     }
 
     //% block
-    export function soundIsStopped() : boolean {
+    export function audioIsStopped() : boolean {
         return false;
     }
 
