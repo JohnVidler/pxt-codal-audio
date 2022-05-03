@@ -20,6 +20,12 @@ enum SampleRateScope {
     Recording
 }
 
+enum GainEnum {
+    Low,
+    Medium,
+    High
+}
+
 /**
  * Functions to operate the v2 on-board microphone and speaker.
  */
@@ -31,7 +37,7 @@ namespace codalAudio {
      * 
      * @param sync If true, block until we run out of memory!
      */
-    //% block="​⏺️ Start recording"
+    //% block="​Start recording"
     export function record() : void {
         /* Dummy function */
     }
@@ -49,11 +55,22 @@ namespace codalAudio {
     }
 
     /**
+     * Set the microphone gain. High values can cause distortion!
+     * 
+     * @param gain The gain to use.
+     */
+    //% block="Set microphone gain to %gain"
+    //% gain.defl=Medium
+    export function setMicrophoneGain( gain?: GainEnum ) : void {
+        /* Dummy function */
+    }
+
+    /**
      * Play any recorded audio
      * 
      * @param sync If true, block until complete
      */
-    //% block="​▶️ Start playback"
+    //% block="​Start playback"
     export function play() : void {
         /* Dummy function */
     }
@@ -61,7 +78,7 @@ namespace codalAudio {
     /**
      * Play and recorded audio
      */
-    //% block="⏹️ Stop"
+    //% block="Stop"
     export function stop() : void {
         /* Dummy function */
     }
@@ -69,22 +86,22 @@ namespace codalAudio {
     /**
      * Play and recorded audio
      */
-    //% block="🚮 Erase recording"
+    //% block="Erase recording"
     export function erase() : void {
         /* Dummy function */
     }
 
-    //% block
+    //% block="Audio is playing"
     export function audioIsPlaying() : boolean {
         return false;
     }
 
-    //% block
+    //% block="Audio is recording"
     export function audioIsRecording() : boolean {
         return false;
     }
 
-    //% block
+    //% block="Audio is stopped"
     export function audioIsStopped() : boolean {
         return false;
     }
