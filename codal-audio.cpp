@@ -30,6 +30,7 @@ namespace codalAudio {
         recording->record();
     }
 
+    //%
     void stop() {
         codalAudio::checkEnv();
         recording->stop();
