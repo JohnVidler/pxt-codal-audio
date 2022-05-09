@@ -1,8 +1,3 @@
-enum WaitOpts {
-    Foreground,
-    Background
-}
-
 enum AudioEvent {
     //% block="Starts Playing"
     StartedPlaying,
@@ -14,13 +9,13 @@ enum AudioEvent {
     StoppedRecording
 }
 
-enum SampleRateScope {
+enum AudioSampleRateScope {
     Everything,
     Playback,
     Recording
 }
 
-enum GainEnum {
+enum AudioGainEnum {
     Low,
     Medium,
     High
@@ -37,7 +32,8 @@ namespace codalAudio {
      * 
      * @param sync If true, block until we run out of memory!
      */
-    //% block="​Start recording"
+    //% block="start recording"
+    //% shim=codalAudio::record
     export function record() : void {
         /* Dummy function */
     }
@@ -47,10 +43,10 @@ namespace codalAudio {
      * 
      * @param hz The sample rate, in Hz
      */
-    //% block="Set sample rate to %hz Hz || for %scope"
+    //% block="set sample rate to %hz Hz || for %scope"
     //% expandableArgumentMode="enabled"
     //% hz.defl=11000
-    export function setSampleRate( hz?: number, scope?: SampleRateScope ) : void {
+    export function setSampleRate( hz?: number, scope?: AudioSampleRateScope ) : void {
         /* Dummy function */
     }
 
@@ -59,9 +55,9 @@ namespace codalAudio {
      * 
      * @param gain The gain to use.
      */
-    //% block="Set microphone gain to %gain"
+    //% block="set microphone gain to %gain"
     //% gain.defl=Medium
-    export function setMicrophoneGain( gain?: GainEnum ) : void {
+    export function setMicrophoneGain( gain?: AudioGainEnum ) : void {
         /* Dummy function */
     }
 
@@ -70,7 +66,7 @@ namespace codalAudio {
      * 
      * @param sync If true, block until complete
      */
-    //% block="​Start playback"
+    //% block="​start playback"
     export function play() : void {
         /* Dummy function */
     }
@@ -78,7 +74,8 @@ namespace codalAudio {
     /**
      * Play and recorded audio
      */
-    //% block="Stop"
+    //% block="stop"
+    //% shim=codalAudio::stop
     export function stop() : void {
         /* Dummy function */
     }
@@ -86,27 +83,27 @@ namespace codalAudio {
     /**
      * Play and recorded audio
      */
-    //% block="Erase recording"
+    //% block="erase recording"
     export function erase() : void {
         /* Dummy function */
     }
 
-    //% block="Audio is playing"
+    //% block="audio is playing"
     export function audioIsPlaying() : boolean {
         return false;
     }
 
-    //% block="Audio is recording"
+    //% block="audio is recording"
     export function audioIsRecording() : boolean {
         return false;
     }
 
-    //% block="Audio is stopped"
+    //% block="audio is stopped"
     export function audioIsStopped() : boolean {
         return false;
     }
 
-    //% block="When audio %eventType"
+    //% block="when audio %eventType"
     export function audioEvent( eventType: AudioEvent, handler: () => void ) : void {
         /* Dummy function */
     }
