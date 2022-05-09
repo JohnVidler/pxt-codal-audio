@@ -111,44 +111,48 @@ namespace codalAudio {
     
 }
 
-namespace pxsim.codalAudio {
-    export function record() : void {
-        console.log( "PXSIM -> codalAudio -> record()" );
+namespace pxsim {
+
+    export class codalAudio {
+
+        record() : void {
+            console.log( "PXSIM -> codalAudio -> record()" );
+        }
+
+    /*    export function setSampleRate( hz?: number, scope?: AudioSampleRateScope ) : void {
+            // Dummy function
+        }
+
+        export function setMicrophoneGain( gain?: AudioGainEnum ) : void {
+            // Dummy function
+        }
+
+        export function play() : void {
+            // Dummy function
+        }*/
+
+        stop() : void {
+            console.log( "PXSIM -> codalAudio -> stop()" );
+        }
+
+        /*export function erase() : void {
+            // Dummy function
+        }
+
+        export function audioIsPlaying() : boolean {
+            return false;
+        }
+
+        export function audioIsRecording() : boolean {
+            return false;
+        }
+
+        export function audioIsStopped() : boolean {
+            return false;
+        }
+
+        export function audioEvent( eventType: AudioEvent, handler: () => void ) : void {
+            // Dummy function
+        }*/
     }
-
-/*    export function setSampleRate( hz?: number, scope?: AudioSampleRateScope ) : void {
-        // Dummy function
-    }
-
-    export function setMicrophoneGain( gain?: AudioGainEnum ) : void {
-        // Dummy function
-    }
-
-    export function play() : void {
-        // Dummy function
-    }*/
-
-    export function stop() : void {
-        console.log( "PXSIM -> codalAudio -> stop()" );
-    }
-
-    /*export function erase() : void {
-        // Dummy function
-    }
-
-    export function audioIsPlaying() : boolean {
-        return false;
-    }
-
-    export function audioIsRecording() : boolean {
-        return false;
-    }
-
-    export function audioIsStopped() : boolean {
-        return false;
-    }
-
-    export function audioEvent( eventType: AudioEvent, handler: () => void ) : void {
-        // Dummy function
-    }*/
 }
