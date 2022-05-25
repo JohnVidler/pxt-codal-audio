@@ -55,6 +55,9 @@ enum AudioRecordingMode {
 //% weight=5 color=#e26fb4 icon="\uf130" block="V2 Audio" advanced=false
 namespace codalAudio {
 
+    // 
+    const AUDIO_EVENT_ID: number = 0xFF000
+
     // Expressed in samples, as we can have varying recording and playback rates!
     const MAX_SAMPLES: number = 55000
     const INTERVAL_STEP: number = 100
@@ -98,6 +101,8 @@ namespace codalAudio {
                         break
                 }
 
+                console.log( "tick!" );
+
                 basic.pause( INTERVAL_STEP )
             }
             console.log( "Impossible code state! Emergency reset!" )
@@ -106,8 +111,12 @@ namespace codalAudio {
     }
 
     function __emitEvent__( type: AudioEvent ): void {
-        if( _handlers[type] !== undefined )
-            return _handlers[type]();
+        try {
+            if (_handlers[type] !== undefined)
+                return _handlers[type]();
+        } catch (err) {
+            console.log(`Handler for ${type} threw exception ${err}`)
+        }
     }
 
     function __setMode__( mode: AudioRecordingMode ): void {
