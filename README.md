@@ -1,8 +1,9 @@
-# CODAL Audio Support Library
-
-Todo...
+# CODAL Audio Support Library (v2 Only)
 
 Semi-functional test blocks for the audio pipeline - will become the real thing as the CODAL support reaches beta.
+
+<img width="500" alt="image" src="https://user-images.githubusercontent.com/537325/170590872-32534279-f4a7-4273-a17b-0b0849297d5b.png">
+A minimal example to see the extension in action.
 
 ## Installation
 
