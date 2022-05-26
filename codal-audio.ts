@@ -56,106 +56,102 @@ enum AudioRecordingMode {
 namespace codalAudio {
 
     // 
-    const AUDIO_EVENT_ID: number = 0xFF000
+    const AUDIO_EVENT_ID: number     = 0xFF000
+    const AUDIO_VALUE_OFFSET: number = 0x10
 
     // Expressed in samples, as we can have varying recording and playback rates!
     const MAX_SAMPLES: number = 55000
     const INTERVAL_STEP: number = 100
 
     // Shim state
-    let _moduleMode: AudioRecordingMode = AudioRecordingMode.Stopped;
+    let _moduleMode: AudioRecordingMode = AudioRecordingMode.Stopped
     let _recordingFreqHz: number = 22000
-    let _playbackFreqHz: number = 22000
-    let _micGain: AudioGainEnum = AudioGainEnum.Medium
+    let _playbackFreqHz: number  = 22000
+    let _micGain: AudioGainEnum  = AudioGainEnum.Medium
 
     // Track if we have a simulator tick timer to use...
-    let _internalTimer: number = 0
-    let _memoryFill:    number = 0
-    let _handlers: (() => void)[] = []
+    let _isSetup: boolean   = false
+    let _memoryFill: number = 0
+    let _playbackHead: number = 0
 
     function __init__(): void {
-        if( _internalTimer !== 0 )
+        if( _isSetup )
             return
-        _internalTimer = 1
+        _isSetup = true
 
-        control.runInParallel( () => {
+        _moduleMode = AudioRecordingMode.Stopped
+        _recordingFreqHz = 22000
+        _playbackFreqHz = 22000
+        _micGain = AudioGainEnum.Medium
+
+
+        control.runInBackground( () => {
             while (true) {
 
                 switch (_moduleMode) {
                     case AudioRecordingMode.Playing:
-                        if (_memoryFill <= 0) {
-                            _memoryFill = 0;
-                            return __setMode__(AudioRecordingMode.Stopped)
+                        if (_playbackHead >= _memoryFill) {
+                            _playbackHead = 0
+                            __setMode__(AudioRecordingMode.Stopped)
                         }
-                        _memoryFill -= _playbackFreqHz / (1000 / INTERVAL_STEP)
-                        console.log(`PLAY --> Memory fill: ${_memoryFill}/${MAX_SAMPLES}, mode = ${_moduleMode}`)
+                        else {
+                            _playbackHead += _playbackFreqHz / (1000 / INTERVAL_STEP)
+                        }
                         break
                     
                     case AudioRecordingMode.Recording:
                         if (_memoryFill >= MAX_SAMPLES) {
-                            _memoryFill = MAX_SAMPLES;
-                            return __setMode__(AudioRecordingMode.Stopped)
+                            _memoryFill = MAX_SAMPLES
+                            __setMode__(AudioRecordingMode.Stopped)
                         }
-                        _memoryFill += _recordingFreqHz / (1000 / INTERVAL_STEP)
-                        console.log(`RECD --> Memory fill: ${_memoryFill}/${MAX_SAMPLES}, mode = ${_moduleMode}`)
+                        else {
+                            _memoryFill += _recordingFreqHz / (1000 / INTERVAL_STEP)
+                        }
                         break
                 }
 
-                console.log( "tick!" );
-
+                //console.log(`Memory fill: ${_memoryFill}/${MAX_SAMPLES}, Playback: ${_playbackHead}/${_memoryFill} mode = ${_moduleMode}`)
                 basic.pause( INTERVAL_STEP )
             }
-            console.log( "Impossible code state! Emergency reset!" )
-            _internalTimer = 0
+            console.warn( "pxt-codal-audio: Impossible code state! Emergency reset of internal timing loop!" )
+            _isSetup = false
         })
     }
 
     function __emitEvent__( type: AudioEvent ): void {
-        try {
-            if (_handlers[type] !== undefined)
-                return _handlers[type]();
-        } catch (err) {
-            console.log(`Handler for ${type} threw exception ${err}`)
-        }
+        control.raiseEvent(AUDIO_EVENT_ID, AUDIO_VALUE_OFFSET+type, EventCreationMode.CreateAndFire )
     }
 
     function __setMode__( mode: AudioRecordingMode ): void {
         switch( mode ) {
             case AudioRecordingMode.Stopped:
                 if( _moduleMode == AudioRecordingMode.Recording ) {
-                    console.log( "Recording --> Stopped" )
                     _moduleMode = AudioRecordingMode.Stopped
                     return __emitEvent__( AudioEvent.StoppedRecording )
                 }
                 
                 if( _moduleMode == AudioRecordingMode.Playing ) {
-                    console.log("Playing --> Stopped")
                     _moduleMode = AudioRecordingMode.Stopped
                     return __emitEvent__( AudioEvent.StoppedPlaying )
                 }
 
-                console.log("Stopped --> Stopped")
-                _moduleMode = AudioRecordingMode.Stopped;
+                _moduleMode = AudioRecordingMode.Stopped
                 return
             
             case AudioRecordingMode.Playing:
                 if( _moduleMode !== AudioRecordingMode.Stopped ) {
-                    console.log("??? --> Stopped")
                     __setMode__( AudioRecordingMode.Stopped )
                 }
                 
-                console.log("Stopped --> Playing")
-                _moduleMode = AudioRecordingMode.Playing;
+                _moduleMode = AudioRecordingMode.Playing
                 return __emitEvent__( AudioEvent.StartedPlaying )
             
             case AudioRecordingMode.Recording:
                 if (_moduleMode !== AudioRecordingMode.Stopped) {
-                    console.log("??? --> Stopped")
                     __setMode__(AudioRecordingMode.Stopped)
                 }
 
-                console.log("Stopped --> Recording")
-                _moduleMode = AudioRecordingMode.Recording;
+                _moduleMode = AudioRecordingMode.Recording
                 return __emitEvent__( AudioEvent.StartedRecording )
         }
     }
@@ -169,8 +165,8 @@ namespace codalAudio {
     //% shim=codalAudio::record
     export function record(): void {
         __init__()
-        if( !isFull() )
-            __setMode__( AudioRecordingMode.Recording );
+        erase()
+        __setMode__( AudioRecordingMode.Recording )
     }
 
     /**
@@ -185,17 +181,17 @@ namespace codalAudio {
         __init__()
         switch (scope) {
             case AudioSampleRateScope.Everything:
-                _recordingFreqHz = hz;
-                _playbackFreqHz = hz;
-                break;
+                _recordingFreqHz = hz
+                _playbackFreqHz = hz
+                break
 
             case AudioSampleRateScope.Playback:
-                _playbackFreqHz = hz;
-                break;
+                _playbackFreqHz = hz
+                break
 
             case AudioSampleRateScope.Recording:
-                _recordingFreqHz = hz;
-                break;
+                _recordingFreqHz = hz
+                break
         }
     }
 
@@ -208,7 +204,7 @@ namespace codalAudio {
     //% gain.defl=Medium
     export function setMicrophoneGain(gain: AudioGainEnum): void {
         __init__()
-        _micGain = gain;
+        _micGain = gain
         return
     }
 
@@ -221,6 +217,7 @@ namespace codalAudio {
     //% shim=codalAudio::play
     export function play(): void {
         __init__()
+        _playbackHead = 0
         if( !isEmpty() )
             __setMode__(AudioRecordingMode.Playing)
         return
@@ -234,6 +231,7 @@ namespace codalAudio {
     export function stop(): void {
         __init__()
         __setMode__(AudioRecordingMode.Stopped)
+        _playbackHead = 0
         return
     }
 
@@ -245,6 +243,7 @@ namespace codalAudio {
     export function erase(): void {
         __init__()
         __setMode__(AudioRecordingMode.Stopped)
+        _playbackHead = 0
         _memoryFill = 0
         return
     }
@@ -309,9 +308,7 @@ namespace codalAudio {
     //% block="when audio %eventType"
     export function audioEvent(eventType: AudioEvent, handler: () => void): void {
         __init__()
-        if( _handlers[eventType] !== undefined )
-            console.warn( "Just about to overwrite an existing event handler. This should never happen!" )
-        _handlers[eventType] = handler
+        control.onEvent(AUDIO_EVENT_ID, AUDIO_VALUE_OFFSET+eventType, handler )
     }
 
 
