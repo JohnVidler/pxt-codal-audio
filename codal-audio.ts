@@ -170,11 +170,11 @@ namespace codalAudio {
     }
 
     /**
-     * Set the sample rate for recording, playback, or both
+     * Set the sample frequency for recording, playback, or both (default)
      * 
-     * @param hz The sample rate, in Hz
+     * @param hz The sample frequency, in Hz
      */
-    //% block="set sample rate to %hz Hz || for %scope"
+    //% block="set sample frequency to %hz Hz || for %scope"
     //% expandableArgumentMode="enabled"
     //% hz.defl=22000
     export function setSampleRate(hz: number, scope?: AudioSampleRateScope): void {
