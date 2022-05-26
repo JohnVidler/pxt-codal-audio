@@ -1,6 +1,6 @@
 {
     "name": "codal-audio",
-    "version": "0.0.27",
+    "version": "0.0.28",
     "description": "CODAL Audio Support Library",
     "license": "MIT",
     "dependencies": {
